@@ -1,0 +1,19 @@
+{
+    "name": "user_generator",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "user_generator/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/user_generator",
+                "main": "user_generator/src/index.ts",
+                "tsConfig": "user_generator/tsconfig.lib.json",
+                "assets": ["user_generator/*.md"]
+            }
+        }
+    }
+}

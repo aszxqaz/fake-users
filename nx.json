@@ -1,0 +1,60 @@
+{
+    "$schema": "./node_modules/nx/schemas/nx-schema.json",
+    "namedInputs": {
+        "default": ["{projectRoot}/**/*", "sharedGlobals"],
+        "production": [
+            "default",
+            "!{projectRoot}/tsconfig.spec.json",
+            "!{projectRoot}/.eslintrc.json",
+            "!{projectRoot}/eslint.config.js"
+        ],
+        "sharedGlobals": []
+    },
+    "plugins": [
+        {
+            "plugin": "@nx/vite/plugin",
+            "options": {
+                "buildTargetName": "build",
+                "serveTargetName": "serve",
+                "previewTargetName": "preview",
+                "serveStaticTargetName": "serve-static"
+            }
+        },
+        {
+            "plugin": "@nx/webpack/plugin",
+            "options": {
+                "buildTargetName": "build",
+                "serveTargetName": "serve",
+                "previewTargetName": "preview"
+            }
+        },
+        {
+            "plugin": "@nx/eslint/plugin",
+            "options": {
+                "targetName": "lint"
+            }
+        }
+    ],
+    "generators": {
+        "@nx/react": {
+            "application": {
+                "babel": true,
+                "style": "css",
+                "bundler": "vite"
+            },
+            "component": {
+                "style": "css"
+            },
+            "library": {
+                "style": "css"
+            }
+        }
+    },
+    "targetDefaults": {
+        "@nx/js:tsc": {
+            "cache": true,
+            "dependsOn": ["^build"],
+            "inputs": ["production", "^production"]
+        }
+    }
+}

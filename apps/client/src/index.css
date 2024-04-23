@@ -1,0 +1,12 @@
+.chakra-table__container {
+    /* width: 130rem !important; */
+    min-width: 100% !important;
+    max-height: 60vh !important;
+    overflow-y: auto !important;
+    margin: auto !important;
+}
+
+.chakra-table {
+    width: 100%;
+    margin: auto;
+}

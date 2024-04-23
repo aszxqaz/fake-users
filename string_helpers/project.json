@@ -1,0 +1,19 @@
+{
+    "name": "string_helpers",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "string_helpers/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/string_helpers",
+                "main": "string_helpers/src/index.ts",
+                "tsConfig": "string_helpers/tsconfig.lib.json",
+                "assets": ["string_helpers/*.md"]
+            }
+        }
+    }
+}
