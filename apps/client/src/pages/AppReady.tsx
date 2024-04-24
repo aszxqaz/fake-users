@@ -59,18 +59,14 @@ export function AppReady({
 
     useDebouncedEffect(
         () => {
-            if (firstRun.current) {
-                firstRun.current = false;
-            } else {
-                console.log('fetching users');
-                fetchUsers({
-                    errorFactor,
-                    seed,
-                    locale,
-                    limit,
-                    offset: 0,
-                });
-            }
+            console.log('fetching users');
+            fetchUsers({
+                errorFactor,
+                seed,
+                locale,
+                limit,
+                offset: 0,
+            });
         },
         500,
         [errorFactor, seed, locale]
