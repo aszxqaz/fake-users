@@ -16,7 +16,6 @@ export class UserGenerator implements IUserGenerator {
         const fullname = this.getFullname();
         const address = this.getAddress();
         const phone = this.getPhoneNumber();
-
         return {
             address,
             fullname,

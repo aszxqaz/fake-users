@@ -36,7 +36,7 @@ export function parseNumInput(
     min: number,
     type: 'float' | 'int'
 ): number | undefined {
-    if (input == '') return 0;
+    if (input == '' || (min < 0 && input == '-')) return 0;
     if (min == 0 && input == '-') return;
     if (
         type == 'float' &&
