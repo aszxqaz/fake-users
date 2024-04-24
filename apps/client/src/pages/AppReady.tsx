@@ -1,6 +1,6 @@
 import { Button, Center, HStack, Spinner } from '@chakra-ui/react';
 import { User } from '@users/common';
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import useDebouncedEffect from 'use-debounced-effect';
 import { Error } from '../common';
 import { CenteredSpinner } from '../common/components';
@@ -52,8 +52,6 @@ export function AppReady({
             limit: users.length ? 10 : 20,
         });
     }, [locale, errorFactor, seed, users.length]);
-
-    const firstRun = useRef(true);
 
     const limit = users.length || 20;
 
