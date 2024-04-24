@@ -19,7 +19,7 @@ export type UserGenerationOptions = {
     locales: string[];
 };
 
-type AppStateInner =
+type AppStateInner = (
     | {
           status: FetchingStatus.Initial;
       }
@@ -33,10 +33,9 @@ type AppStateInner =
     | {
           status: FetchingStatus.Fetching;
       }
-    | {
-          status: FetchingStatus.Error;
-          message: string;
-      };
+) & {
+    error?: string;
+};
 
 export class AppState extends BaseState<AppStateInner> {
     static initial = new AppState({
@@ -45,15 +44,14 @@ export class AppState extends BaseState<AppStateInner> {
 
     error(message: string): AppState {
         return new AppState({
-            ...this,
-            status: FetchingStatus.Error,
-            message,
+            ...this.inner,
+            error: message,
         });
     }
 
     fetching(): AppState {
         return new AppState({
-            ...this,
+            ...this.inner,
             status: FetchingStatus.Fetching,
         });
     }

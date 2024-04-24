@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
-import { ColorModeSwitcher } from '../common/components/ColorModeSwitcher';
+import { ColorModeSwitcher } from '../common/components';
 
 export function Header({ children }: PropsWithChildren) {
     return (
