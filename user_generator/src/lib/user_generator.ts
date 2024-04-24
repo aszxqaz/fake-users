@@ -52,10 +52,16 @@ export class UserGenerator implements IUserGenerator {
 
     private getPhoneNumber(): string {
         let phone = this.generator.phone();
-        const code = this.generator.fromEqualWeights([
-            this.countryInfo.phoneCode,
-            '',
-        ]);
+        let code = '';
+        if (
+            !phone.startsWith(this.countryInfo.phoneCode) ||
+            !phone.startsWith('+' + this.countryInfo.phoneCode)
+        ) {
+            code = this.generator.fromEqualWeights([
+                this.countryInfo.phoneCode,
+                '',
+            ]);
+        }
         let plus = '';
         if (code) {
             plus = this.generator.fromEqualWeights(['+', '']);
