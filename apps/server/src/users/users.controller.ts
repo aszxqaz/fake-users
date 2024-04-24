@@ -26,7 +26,9 @@ export class UsersController {
 
     @Get('users')
     fetch(@Query() query: QueryOptions): FetchResponse {
+        const now = Date.now();
         const users = this.usersService.generateUsers(query);
+        console.log(`Done in ${Date.now() - now} ms`);
         return {
             users,
             locale: query.locale,

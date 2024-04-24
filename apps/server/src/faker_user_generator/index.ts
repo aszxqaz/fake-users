@@ -31,35 +31,48 @@ export class FakerLocaleFakeDataGenerator implements ILocaleFakeDataGenerator {
     }
 
     fullname() {
-        return this.faker.person.fullName();
+        return this.tryExecStr(() => this.faker.person.fullName());
     }
 
     phone() {
-        return this.faker.phone.number();
+        return this.tryExecStr(() => this.faker.phone.number());
     }
 
     state() {
-        return this.faker.location.state();
+        return this.tryExecStr(() => this.faker.location.state());
     }
 
     city() {
-        return this.faker.location.city();
+        return this.tryExecStr(() => this.faker.location.city());
     }
 
     street() {
-        return this.faker.location.street();
+        return this.tryExecStr(() => this.faker.location.street());
     }
 
     buildingNum() {
-        return this.faker.location.buildingNumber();
+        return this.tryExecStr(() => this.faker.location.buildingNumber());
     }
 
     apartment() {
-        return this.faker.location.secondaryAddress();
+        return this.tryExecStr(() => this.faker.location.secondaryAddress());
     }
 
     zipCode() {
-        return this.faker.location.zipCode();
+        return this.tryExecStr(() => this.faker.location.zipCode());
+    }
+
+    private tryExecStr(fn: () => string): string {
+        return this.tryExec(fn, '');
+    }
+
+    private tryExec<T>(fn: () => T, default_: T): T {
+        try {
+            const r = fn();
+            return r;
+        } catch (_) {
+            return default_;
+        }
     }
 
     id() {

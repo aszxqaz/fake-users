@@ -8,6 +8,7 @@ import { FetchingStatus } from './state';
 export function useFetchUsers() {
     const { apiClient } = useApiClient();
     const { state, setAppState } = useAppContext();
+    const usersLen = state.getUsers()?.length || 0;
 
     const onError = useCallback(
         (err: Err) => {
@@ -39,12 +40,12 @@ export function useFetchUsers() {
 
     const fetchNext = useCallback(async () => {
         if (state.inner.status != FetchingStatus.Ready) return;
-        const limit = state.getUsers()?.length ? 20 : 10;
+        const limit = state.getUsers()?.length ? 10 : 20;
         const result = await apiClient.fetchUsers({
             seed: state.inner.options.seed,
             errorFactor: state.inner.options.errorFactor,
             locale: state.inner.options.locale,
-            offset: state.getUsers()?.length || 0,
+            offset: usersLen,
             limit,
         });
         result.fold(onError, onFetchResponse);

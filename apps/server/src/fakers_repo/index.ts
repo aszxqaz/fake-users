@@ -1,6 +1,6 @@
 import { Faker, Randomizer, allLocales } from '@faker-js/faker';
 import { FakeDataGenerator } from '@users/user_generator';
-import { RandomGenerator, xoroshiro128plus } from 'pure-rand';
+import { RandomGenerator, congruential32 } from 'pure-rand';
 import { CountriesRepo } from '../contries_repo';
 import { FakerLocaleFakeDataGenerator } from '../faker_user_generator';
 import { StringErrTransformer } from '../string_transformer';
@@ -14,15 +14,24 @@ const generators = Object.values(allLocales).map(locale => {
     return new FakerLocaleFakeDataGenerator(faker);
 });
 
-export const fakeDataGenerator = new FakeDataGenerator(
+const fakeDataGenerator = new FakeDataGenerator(
     new CountriesRepo(),
     generators,
     generator => new StringErrTransformer(generator)
 );
 
+const locales = fakeDataGenerator.getAvailableLocales();
+
+for (const locale of locales) {
+    const user = fakeDataGenerator.generate(locale, 0);
+    if (!user.address || !user.fullname || !user.phone) {
+        fakeDataGenerator.excludeLocale(locale);
+    }
+}
+
 function generatePureRandRandomizer(
     seed: number | number[] = Date.now() ^ (Math.random() * 0x100000000),
-    factory: (seed: number) => RandomGenerator = xoroshiro128plus
+    factory: (seed: number) => RandomGenerator = congruential32
 ): Randomizer {
     const self = {
         next: () => (self.generator.unsafeNext() >>> 0) / 0x100000000,
@@ -33,3 +42,5 @@ function generatePureRandRandomizer(
     self.seed(seed);
     return self;
 }
+
+export { fakeDataGenerator };

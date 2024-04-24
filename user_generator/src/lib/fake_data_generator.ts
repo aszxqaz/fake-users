@@ -14,7 +14,10 @@ export type FakeDataGeneratorStore = {
 } & CountryInfo;
 
 export class FakeDataGenerator {
-    public readonly fakersMap = new Map<string, FakeDataGeneratorStore>();
+    public readonly localeGenerators = new Map<
+        string,
+        FakeDataGeneratorStore
+    >();
 
     constructor(
         private readonly countriesRepo: ICountriesRepo,
@@ -36,7 +39,7 @@ export class FakeDataGenerator {
                         stringTransformerFactory(generator)
                     );
 
-                    this.fakersMap.set(info.name, {
+                    this.localeGenerators.set(info.name, {
                         createGenerator: userGenerator,
                         transformer: userTransformer,
                         ...info,
@@ -46,36 +49,40 @@ export class FakeDataGenerator {
         }
     }
 
+    excludeLocale(locale: string) {
+        this.localeGenerators.delete(locale);
+    }
+
     generate(locale: string, seed: number): User | undefined {
-        const localeStoreItem = this.fakersMap.get(locale);
+        const localeStoreItem = this.localeGenerators.get(locale);
         if (!localeStoreItem) return;
         return localeStoreItem.createGenerator.generate();
     }
 
     transform(user: User, errFactor: number) {
-        const localeStoreItem = this.fakersMap.get(user.locale);
+        const localeStoreItem = this.localeGenerators.get(user.locale);
         if (!localeStoreItem) return;
         return localeStoreItem.transformer.transform(user, errFactor);
     }
 
     getAvailableLocales(): string[] {
-        return Array.from(this.fakersMap.keys());
+        return Array.from(this.localeGenerators.keys());
     }
 
     getGeneratorForLocale(locale: string): UserGenerator | undefined {
-        const localeStoreItem = this.fakersMap.get(locale);
+        const localeStoreItem = this.localeGenerators.get(locale);
         if (!localeStoreItem) return;
         return localeStoreItem.createGenerator;
     }
 
     getTransformerForLocale(locale: string): IUserErrTransformer | undefined {
-        const localeStoreItem = this.fakersMap.get(locale);
+        const localeStoreItem = this.localeGenerators.get(locale);
         if (!localeStoreItem) return;
         return localeStoreItem.transformer;
     }
 
     getForLocale(locale: string): FakeDataGeneratorStore | undefined {
-        const faker = this.fakersMap.get(locale);
+        const faker = this.localeGenerators.get(locale);
         if (!faker) return;
         return faker;
     }

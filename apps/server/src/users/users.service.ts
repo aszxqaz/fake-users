@@ -23,8 +23,6 @@ export class UsersService {
 
         const resultSeed = seed + offset / NEXT_PAGE_SIZE;
 
-        console.log(`resultSeed=${resultSeed}`);
-
         generator.seed(resultSeed);
         const users = [];
         for (let i = 0; i < limit; i++) {

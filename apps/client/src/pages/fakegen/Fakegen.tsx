@@ -52,17 +52,14 @@ export function AppReady({ users, options }: AppReadyProps) {
 
     useDebouncedEffect(
         () => {
-            console.log(options.errorFactor);
-            console.log(options.seed);
             if (firstRun.current) {
                 firstRun.current = false;
                 return;
             }
-            console.log('[AppReady] fetchRegenerate()');
             fetchRegenerate();
         },
-        200,
-        [firstRun.current, options.errorFactor, options.seed, fetchRegenerate]
+        500,
+        [firstRun.current, options.errorFactor, options.seed]
     );
 
     console.log(`Appready: ${options.locale}`);
