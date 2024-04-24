@@ -54,7 +54,7 @@ export class UserGenerator implements IUserGenerator {
         let phone = this.generator.phone();
         let code = '';
         if (
-            !phone.startsWith(this.countryInfo.phoneCode) ||
+            !phone.startsWith(this.countryInfo.phoneCode) &&
             !phone.startsWith('+' + this.countryInfo.phoneCode)
         ) {
             code = this.generator.fromEqualWeights([
