@@ -1,10 +1,9 @@
 import { Faker, Randomizer, allLocales } from '@faker-js/faker';
 import { FakeDataGenerator } from '@users/user_generator';
+import { RandomGenerator, xoroshiro128plus } from 'pure-rand';
 import { CountriesRepo } from '../contries_repo';
 import { FakerLocaleFakeDataGenerator } from '../faker_user_generator';
 import { StringErrTransformer } from '../string_transformer';
-
-const randomizer = generatePureRandRandomizer();
 
 const generators = Object.values(allLocales).map(locale => {
     const randomizer = generatePureRandRandomizer();
@@ -20,8 +19,6 @@ export const fakeDataGenerator = new FakeDataGenerator(
     generators,
     generator => new StringErrTransformer(generator)
 );
-
-import { RandomGenerator, xoroshiro128plus } from 'pure-rand';
 
 function generatePureRandRandomizer(
     seed: number | number[] = Date.now() ^ (Math.random() * 0x100000000),
