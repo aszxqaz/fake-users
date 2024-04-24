@@ -1,5 +1,4 @@
 import {
-    Box,
     Table as ChakraTable,
     TableContainer,
     Tbody,
@@ -11,27 +10,20 @@ import {
 } from '@chakra-ui/react';
 import { User } from '@users/common';
 import { useInView } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
-import { CenteredSpinner } from '../../../common/components/CenterSpinner';
+import { useEffect, useRef } from 'react';
 
 type UsersTableProps = {
     users: User[];
-    onScrollDown: () => Promise<void>;
+    onScrollDown: () => void;
 };
 
 export function UsersTable({ users, onScrollDown }: UsersTableProps) {
     const rowRef = useRef(null);
     const isInView = useInView(rowRef);
-    // const scrollObserverEnabled = useRef(false);
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (isInView) {
-            setIsLoading(true);
-            console.log(`[UsersTable] fetchNext()`);
-            onScrollDown().then(() => {
-                setIsLoading(false);
-            });
+            onScrollDown();
         }
     }, [isInView]);
 
@@ -71,14 +63,6 @@ export function UsersTable({ users, onScrollDown }: UsersTableProps) {
                         ))}
                 </Tbody>
             </ChakraTable>
-            <Box
-                bgColor="rgba(0,0,0,0.3)"
-                pos="absolute"
-                inset={0}
-                visibility={isLoading ? 'visible' : 'hidden'}
-            >
-                <CenteredSpinner />
-            </Box>
         </TableContainer>
     );
 }

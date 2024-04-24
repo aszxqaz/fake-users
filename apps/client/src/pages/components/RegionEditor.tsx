@@ -1,6 +1,6 @@
 import { HStack, Text } from '@chakra-ui/react';
-import { UserGenerationOptions } from '../../../state';
-import { CustomSelect } from '../../../ui';
+import { UserGenerationOptions } from '../../state';
+import { CustomSelect } from '../../ui';
 
 type RegionEditorProps = Pick<UserGenerationOptions, 'locale' | 'locales'> & {
     onLocaleChange: (locale: string) => void;

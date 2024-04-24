@@ -26,7 +26,9 @@ type AppStateInner =
     | {
           status: FetchingStatus.Ready;
           users: UsersStore;
-          options: UserGenerationOptions;
+          locale: string;
+          locales: string[];
+          loading: boolean;
       }
     | {
           status: FetchingStatus.Fetching;
@@ -56,6 +58,14 @@ export class AppState extends BaseState<AppStateInner> {
         });
     }
 
+    setLocale(locale: string) {
+        if (this.inner.status != FetchingStatus.Ready) return this;
+        return new AppState({
+            ...this.inner,
+            locale,
+        });
+    }
+
     helloReceived({
         locale,
         locales,
@@ -66,12 +76,9 @@ export class AppState extends BaseState<AppStateInner> {
         if (this.inner.status != FetchingStatus.Initial) return this;
         return new AppState({
             status: FetchingStatus.Ready,
-            options: {
-                locale,
-                errorFactor,
-                seed,
-                locales,
-            },
+            loading: false,
+            locales,
+            locale,
             users: {
                 [locale]: users,
             },
@@ -89,76 +96,23 @@ export class AppState extends BaseState<AppStateInner> {
         };
         return new AppState({
             ...this.inner,
+            loading: false,
             users,
-            options: {
-                ...this.inner.options,
-                locale,
-            },
+            locale,
         });
     }
 
     getUsers(): User[] | undefined {
         if (this.inner.status == FetchingStatus.Ready) {
-            return this.inner.users[this.inner.options.locale];
+            return this.inner.users[this.inner.locale];
         }
     }
 
-    setErrFactor(errFactor: number): AppState {
-        console.log(`[AppState] setErrFactor(): errFactor=${errFactor}`);
-        if (this.inner.status != FetchingStatus.Ready) {
-            throw Error('state should be ready');
-        }
+    setLoading(loading: boolean): AppState {
+        if (this.inner.status != FetchingStatus.Ready) return this;
         return new AppState({
             ...this.inner,
-            options: {
-                ...this.inner.options,
-                errorFactor: errFactor,
-            },
+            loading,
         });
-    }
-
-    setSeed(seed: number): AppState {
-        if (this.inner.status != FetchingStatus.Ready) {
-            throw Error('state should be ready');
-        }
-        return new AppState({
-            ...this.inner,
-            options: {
-                ...this.inner.options,
-                seed,
-            },
-        });
-    }
-
-    setLocale(locale: string): AppState {
-        console.log('set locale');
-        if (this.inner.status != FetchingStatus.Ready) {
-            throw Error('asdasd');
-        }
-        return new AppState({
-            ...this.inner,
-            options: {
-                ...this.inner.options,
-                locale,
-            },
-        });
-    }
-
-    get seed(): number | undefined {
-        if (this.inner.status == FetchingStatus.Ready) {
-            return this.inner.options.seed;
-        }
-    }
-
-    get locale(): string | undefined {
-        if (this.inner.status == FetchingStatus.Ready) {
-            return this.inner.options.locale;
-        }
-    }
-
-    get errorFactor(): number | undefined {
-        if (this.inner.status == FetchingStatus.Ready) {
-            return this.inner.options.errorFactor;
-        }
     }
 }

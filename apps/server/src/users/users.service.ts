@@ -27,7 +27,7 @@ export class UsersService {
         const users = [];
         for (let i = 0; i < limit; i++) {
             let user = generator.generate();
-            user = transformer.transform(user, errFactor);
+            user = transformer.transform(user, errFactor, locale);
             users.push(user);
         }
         return users;

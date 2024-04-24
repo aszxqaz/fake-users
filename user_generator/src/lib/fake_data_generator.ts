@@ -59,10 +59,10 @@ export class FakeDataGenerator {
         return localeStoreItem.createGenerator.generate();
     }
 
-    transform(user: User, errFactor: number) {
-        const localeStoreItem = this.localeGenerators.get(user.locale);
+    transform(user: User, errFactor: number, locale: string) {
+        const localeStoreItem = this.localeGenerators.get(locale);
         if (!localeStoreItem) return;
-        return localeStoreItem.transformer.transform(user, errFactor);
+        return localeStoreItem.transformer.transform(user, errFactor, locale);
     }
 
     getAvailableLocales(): string[] {

@@ -1,6 +1,6 @@
 import { ChakraProvider, theme } from '@chakra-ui/react';
 import { ApiClientProvider } from './api';
-import { Fakegen } from './pages/fakegen/Fakegen';
+import { Fakegen } from './pages/Fakegen';
 import { AppStateProvider } from './state/context';
 
 function App() {

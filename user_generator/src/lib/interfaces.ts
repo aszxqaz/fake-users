@@ -9,7 +9,7 @@ export interface IUserGenerator {
 }
 
 export interface IUserErrTransformer {
-    transform(user: User, errFactor: number): User;
+    transform(user: User, errFactor: number, locale: string): User;
 }
 
 export interface ICountriesRepo {

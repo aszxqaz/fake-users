@@ -22,7 +22,6 @@ export class UserGenerator implements IUserGenerator {
             fullname,
             id,
             phone,
-            locale: this.countryInfo.name,
         };
     }
 
@@ -31,27 +30,20 @@ export class UserGenerator implements IUserGenerator {
     }
 
     private getAddress(): string {
-        const state = this.generator.state();
-        const city = this.generator.city();
-        const street = this.generator.street();
-
-        const buildingNumber = this.generator.int(1, 200);
-        const secondaryAddress = this.generator.apartment();
-        const postcode = this.generator.zipCode();
-
-        const parts = [
+        let parts = [
             this.countryInfo.nameLocal,
-            state,
-            city,
-            street,
-            buildingNumber,
-            secondaryAddress,
-            postcode,
-        ].filter(part => part);
-
+            () => this.generator.state(),
+            () => this.generator.city(),
+            () => this.generator.street(),
+            () => this.generator.int(1, 200),
+            () => this.generator.apartment(),
+            () => this.generator.zipCode(),
+        ];
         const offset = this.generator.int(0, 2);
-        const selected = parts.slice(offset, offset + parts.length - 2);
-        return selected.join(', ');
+        return parts
+            .slice(offset, offset + parts.length - 2)
+            .map(el => (typeof el == 'function' ? el() : el))
+            .join(', ');
     }
 
     private getId(): string {
@@ -67,12 +59,7 @@ export class UserGenerator implements IUserGenerator {
         let plus = '';
         if (code) {
             plus = this.generator.fromEqualWeights(['+', '']);
-            // space = this.getRandomFromEqualProbs([" ", ""]);
         }
-        const dashesCleared = this.generator.int(0, 1);
-        // if (dashesCleared) {
-        // 	number = number.replace(/[^+\d\(\)]/g, "");
-        // }
         return plus + code + phone;
     }
 }

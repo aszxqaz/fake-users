@@ -12,7 +12,6 @@ export class ApiClient extends BaseApiClient {
     }
 
     async fetchUsers(query: IQueryOptions): AsyncResult<FetchResponse> {
-        console.dir(`[ApiClient] fetchUsers(): query=${JSON.stringify(query)}`);
         return this.client
             .get(`/users`, { params: query })
             .then(res => Result.Ok(res.data as FetchResponse))

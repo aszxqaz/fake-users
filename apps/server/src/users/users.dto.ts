@@ -24,7 +24,6 @@ export class QueryOptions implements IQueryOptions {
     @Type(() => Number)
     errorFactor: number = DEFAULT_ERR_FACTOR;
 
-    @Min(0)
     @IsNumber()
     @Type(() => Number)
     seed: number = DEFAULT_SEED;
