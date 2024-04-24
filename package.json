@@ -24,6 +24,7 @@
         "@nestjs/jwt": "^10.2.0",
         "@nestjs/mapped-types": "*",
         "@nestjs/platform-express": "^10.0.0",
+        "@nestjs/serve-static": "^4.0.2",
         "@types/lodash": "^4.17.0",
         "@types/uuid": "^9.0.8",
         "axios": "^1.6.8",
