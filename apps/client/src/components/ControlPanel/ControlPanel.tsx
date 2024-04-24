@@ -1,5 +1,5 @@
 import { Button, HStack } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useSkipFirstRenderEffect } from '../../common/hooks/useSkipFirstRenderEffect';
 import { UserGenerationOptions } from '../../state';
 import { useNumberInputController } from '../number_input_controller';
 import { SeedEditor } from './components';
@@ -41,7 +41,7 @@ export function ControlPanel({
         maxValue: Number.MAX_SAFE_INTEGER,
     });
 
-    useEffect(() => {
+    useSkipFirstRenderEffect(() => {
         console.log('[ControlPanel] resetting vars of the parent');
         onErrFactorChangeUpCb(errFactor);
         onSeedChangeUpCb(seed);

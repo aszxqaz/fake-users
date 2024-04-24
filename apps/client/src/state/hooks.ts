@@ -37,32 +37,48 @@ export function useFetchUsers() {
         result.fold(onError, onHelloResponse);
     }, [isStatusNotInitial, apiClient, onError, onFetchResponse]);
 
-    const isStatusNotReady = state.inner.status != FetchingStatus.Ready;
     const fetchNext = useCallback(async () => {
-        if (isStatusNotReady) return;
-        console.log(`fetchNext(): ${state.inner.options.locale}`);
-        const limit = state.getUsers().length ? 10 : 20;
+        if (state.inner.status != FetchingStatus.Ready) return;
+        const limit = state.getUsers()?.length ? 20 : 10;
         const result = await apiClient.fetchUsers({
             seed: state.inner.options.seed,
             errorFactor: state.inner.options.errorFactor,
             locale: state.inner.options.locale,
-            offset: state.getUsers().length,
+            offset: state.getUsers()?.length || 0,
             limit,
         });
         result.fold(onError, onFetchResponse);
-    }, [isStatusNotReady, apiClient, onError, onFetchResponse]);
+    }, [
+        state.seed,
+        state.locale,
+        state.getUsers()?.length,
+        state.inner.status,
+        state.errorFactor,
+        apiClient,
+        onError,
+        onFetchResponse,
+    ]);
 
     const fetchRegenerate = useCallback(async () => {
-        if (isStatusNotReady) return;
+        if (state.inner.status != FetchingStatus.Ready) return;
         const result = await apiClient.fetchUsers({
             seed: state.inner.options.seed,
             errorFactor: state.inner.options.errorFactor,
             locale: state.inner.options.locale,
-            limit: state.getUsers().length,
+            limit: state.getUsers()?.length || 20,
             offset: 0,
         });
         result.fold(onError, onFetchResponse);
-    }, [isStatusNotReady, apiClient, onError, onFetchResponse]);
+    }, [
+        state.seed,
+        state.locale,
+        state.errorFactor,
+        state.getUsers()?.length,
+        state.inner.status,
+        apiClient,
+        onError,
+        onFetchResponse,
+    ]);
 
     return {
         fetchInitial,
@@ -76,6 +92,7 @@ export function useOptionsMutation() {
 
     const setErrFactor = useCallback(
         (errFactor: number) => {
+            console.log('set error factor');
             setAppState(prev => prev.setErrFactor(errFactor));
         },
         [setAppState]

@@ -14,6 +14,9 @@ export function RegionEditor({
     const options = locales.map(locale => ({ value: locale, title: locale }));
 
     function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
+        console.log(
+            `[RegionEditor] onChange(): target-value=${e.target.value}`
+        );
         onLocaleChange(e.target.value);
     }
 

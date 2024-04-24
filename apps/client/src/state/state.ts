@@ -79,6 +79,7 @@ export class AppState extends BaseState<AppStateInner> {
     }
 
     usersFetched({ locale, offset, users: rcvUsers }: FetchResponse): AppState {
+        console.log(`received locale: ${locale}`);
         if (this.inner.status != FetchingStatus.Ready) return this;
 
         let localeUsers = this.inner.users[locale] || [];
@@ -96,11 +97,10 @@ export class AppState extends BaseState<AppStateInner> {
         });
     }
 
-    getUsers(): User[] {
-        if (this.inner.status != FetchingStatus.Ready) {
-            throw Error('state should be ready');
+    getUsers(): User[] | undefined {
+        if (this.inner.status == FetchingStatus.Ready) {
+            return this.inner.users[this.inner.options.locale];
         }
-        return this.inner.users[this.inner.options.locale];
     }
 
     setErrFactor(errFactor: number): AppState {
@@ -131,7 +131,10 @@ export class AppState extends BaseState<AppStateInner> {
     }
 
     setLocale(locale: string): AppState {
-        if (this.inner.status != FetchingStatus.Ready) return this;
+        console.log('set locale');
+        if (this.inner.status != FetchingStatus.Ready) {
+            throw Error('asdasd');
+        }
         return new AppState({
             ...this.inner,
             options: {
@@ -139,5 +142,23 @@ export class AppState extends BaseState<AppStateInner> {
                 locale,
             },
         });
+    }
+
+    get seed(): number | undefined {
+        if (this.inner.status == FetchingStatus.Ready) {
+            return this.inner.options.seed;
+        }
+    }
+
+    get locale(): string | undefined {
+        if (this.inner.status == FetchingStatus.Ready) {
+            return this.inner.options.locale;
+        }
+    }
+
+    get errorFactor(): number | undefined {
+        if (this.inner.status == FetchingStatus.Ready) {
+            return this.inner.options.errorFactor;
+        }
     }
 }

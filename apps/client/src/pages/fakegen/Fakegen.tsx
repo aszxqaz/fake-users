@@ -11,6 +11,7 @@ import {
 import { UsersTable } from './components/UsersTable';
 
 import { User } from '@users/common';
+import useDebouncedEffect from 'use-debounced-effect';
 import { NoContentPlaceholder } from '../../common/components/NoContentPlaceholder';
 import { Header } from '../../layout';
 import { useFetchUsers, useOptionsMutation } from '../../state/hooks';
@@ -49,21 +50,22 @@ export function AppReady({ users, options }: AppReadyProps) {
     const { setErrFactor, setLocale, setSeed } = useOptionsMutation();
     const firstRun = useRef(true);
 
-    // useDebouncedEffect(
-    //     () => {
-    //         console.log(options.errorFactor);
-    //         console.log(options.seed);
-    //         if (firstRun.current) {
-    //             firstRun.current = false;
-    //             return;
-    //         }
-    //         console.log('[AppReady] fetchRegenerate()');
-    //         fetchRegenerate();
-    //     },
-    //     500,
-    //     [firstRun.current, options.errorFactor, options.seed, fetchRegenerate]
-    // );
+    useDebouncedEffect(
+        () => {
+            console.log(options.errorFactor);
+            console.log(options.seed);
+            if (firstRun.current) {
+                firstRun.current = false;
+                return;
+            }
+            console.log('[AppReady] fetchRegenerate()');
+            fetchRegenerate();
+        },
+        200,
+        [firstRun.current, options.errorFactor, options.seed, fetchRegenerate]
+    );
 
+    console.log(`Appready: ${options.locale}`);
     useEffect(() => {
         if (!users) {
             fetchNext();
