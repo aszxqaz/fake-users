@@ -20,6 +20,7 @@ async function bootstrap() {
             'http://127.0.0.1:4200',
         ],
     });
-    await app.listen(process.env.PORT || 8080);
+    const port = process.env.PORT || 8080;
+    await app.listen(port);
 }
 bootstrap();
