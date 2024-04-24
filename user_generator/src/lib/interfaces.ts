@@ -43,5 +43,3 @@ export interface ILocaleFakeDataGenerator {
     id: () => string;
     char: () => string;
 }
-
-export type IAllFakers = {};
