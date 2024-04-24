@@ -57,7 +57,6 @@ export function AppReady({
 
     useDebouncedEffect(
         () => {
-            console.log('fetching users');
             fetchUsers({
                 errorFactor,
                 seed,

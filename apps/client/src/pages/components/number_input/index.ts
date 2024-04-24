@@ -23,9 +23,6 @@ export const useNumberInputController = ({
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         const parsed = parseNumInput(e.target.value, maxValue, minValue, type);
-        console.log(e.target.value);
-        console.log(parsed);
-        console.log('------');
         if (parsed !== undefined) {
             setInputValue(e.target.value);
             setParsedValue(parsed);

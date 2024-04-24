@@ -4,7 +4,6 @@ export function checkIntInputBounds(
     minInt: number
 ): boolean {
     const bigint = BigInt(input);
-    console.log(input + ` MIN ${minInt} ${maxInt}`);
     if (bigint < minInt || bigint > maxInt) return false;
     return true;
 }

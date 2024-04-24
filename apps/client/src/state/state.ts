@@ -84,7 +84,6 @@ export class AppState extends BaseState<AppStateInner> {
     }
 
     usersFetched({ locale, offset, users: rcvUsers }: FetchResponse): AppState {
-        console.log(`received locale: ${locale}`);
         if (this.inner.status != FetchingStatus.Ready) return this;
 
         let localeUsers = this.inner.users[locale] || [];
